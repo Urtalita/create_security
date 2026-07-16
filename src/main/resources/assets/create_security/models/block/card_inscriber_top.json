@@ -1,0 +1,45 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "create_security:block/card_inscriber_ticket",
+		"particle": "create_security:block/card_inscriber_ticket"
+	},
+	"elements": [
+		{
+			"from": [2, 12, 0],
+			"to": [16, 15, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 12.1, 14]},
+			"faces": {
+				"north": {"uv": [8.50101, 6.12313, 10.25693, 6.49437], "texture": "#1"},
+				"east": {"uv": [6.7451, 6.12313, 8.50101, 6.49437], "texture": "#1"},
+				"south": {"uv": [12.01284, 6.12313, 13.76875, 6.49437], "texture": "#1"},
+				"west": {"uv": [10.25693, 6.12313, 12.01284, 6.49437], "texture": "#1"},
+				"up": {"uv": [10.25693, 6.12313, 8.50101, 4.39062], "texture": "#1"},
+				"down": {"uv": [12.01284, 4.39062, 10.25693, 6.12313], "texture": "#1"}
+			}
+		},
+		{
+			"from": [6, 13.5, -3],
+			"to": [12, 13.5, 0],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 12.1, 14]},
+			"faces": {
+				"north": {"uv": [4.86377, 7.48437, 5.6163, 7.48437], "texture": "#1"},
+				"east": {"uv": [4.4875, 7.48437, 4.86377, 7.48437], "texture": "#1"},
+				"south": {"uv": [5.99257, 7.48437, 6.7451, 7.48437], "texture": "#1"},
+				"west": {"uv": [5.6163, 7.48437, 5.99257, 7.48437], "texture": "#1"},
+				"up": {"uv": [5.6163, 7.48437, 4.86377, 7.11312], "texture": "#1"},
+				"down": {"uv": [6.36883, 7.11312, 5.6163, 7.48437], "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "couvercle",
+			"origin": [14, 11.5, 4],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
+}

@@ -57,11 +57,11 @@ public class InscriberScreen extends AbstractSimiContainerScreen<InscriberMenu> 
 
         confirmButton = new IconButton(x + 153, y + 82, AllIcons.I_CONFIRM);
         confirmButton.withCallback(this::confirm);
-        confirmButton.setToolTip(Component.literal("Encode card"));
         addRenderableWidget(confirmButton);
 
         lockButton = new IconButton(x + 9, y + 82, AllIcons.I_CONFIG_LOCKED);
         lockButton.withCallback(this::lock);
+        lockButton.setToolTip(Component.translatable("gui.create_security.inscriber_gui.label_mode_player"));
         addRenderableWidget(lockButton);
 
         rightButton = new ConfigurableButton(x + 147, y + 40, 12, 18, GuiTextures.RIGHT, GuiTextures.RIGHT_HOVERED, GuiTextures.RIGHT_PRESSED);
@@ -105,6 +105,8 @@ public class InscriberScreen extends AbstractSimiContainerScreen<InscriberMenu> 
 
     void lock(){
         lock = !lock;
+        if(lock) lockButton.setToolTip(Component.translatable("gui.create_security.inscriber_gui.tooltip_ssauniversal_ssr_cards_can_be_rema"));
+        else lockButton.setToolTip(Component.translatable("gui.create_security.inscriber_gui.tooltip_sseplayer_ssrencypted_cards_are_on"));
     }
 
     void confirm(){

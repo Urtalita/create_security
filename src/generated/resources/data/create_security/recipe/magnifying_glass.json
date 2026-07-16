@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "create:copper_sheet"
+    },
+    "b": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "c": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " a ",
+    "aba",
+    "ca "
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_security:magnifying_glass"
+  }
+}

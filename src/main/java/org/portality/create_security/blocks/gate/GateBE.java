@@ -14,28 +14,37 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.portality.create_security.Index.Index;
+import org.portality.create_security.blocks.SmartEncryptedInventory;
 import org.portality.create_security.blocks.reader.ReaderBlock;
 import org.portality.create_security.items.CardItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GateBE extends SmartBlockEntity {
     private float gateRotation;
     private float prevGateRotation;
     public boolean isGateOpen = false;
-    public SmartInventory inventory;
+    public SmartEncryptedInventory inventory;
     private int openTicks = -1;
     private int savedTier;
 
     public GateBE(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        inventory = new SmartInventory(3, this, (slot, stack) -> {
+
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(0);
+        list.add(1);
+        list.add(2);
+
+        inventory = new SmartEncryptedInventory(3, this, (slot, stack) -> {
             return true;
-        });
+        }, list);
     }
 
     @Override
@@ -80,7 +89,7 @@ public class GateBE extends SmartBlockEntity {
             if(entity.getItem().getItem() instanceof CardItem){
                 ItemStack stack = entity.getItem();
 
-                if(isSameCode(stack, inventory, savedTier)) {
+                if(isSameCode(stack, inventory, level, savedTier)) {
                     isGateOpen = true;
                     openTicks = 40;
 
@@ -101,9 +110,9 @@ public class GateBE extends SmartBlockEntity {
         if(!(itemInHand.getItem() instanceof CardItem)) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         if(inventory.isEmpty()){
-            inventory.setStackInSlot(0, CardItem.getFirstFilter(itemInHand));
-            inventory.setStackInSlot(1, CardItem.getSecondFilter(itemInHand));
-            inventory.setStackInSlot(2, CardItem.getThirdFilter(itemInHand));
+            inventory.setStackInSlot(0, CardItem.getFirstFilter(itemInHand, level));
+            inventory.setStackInSlot(1, CardItem.getSecondFilter(itemInHand, level));
+            inventory.setStackInSlot(2, CardItem.getThirdFilter(itemInHand, level));
             savedTier = CardItem.getTier(itemInHand);
 
             if(player instanceof ServerPlayer serverPlayer){
@@ -112,7 +121,7 @@ public class GateBE extends SmartBlockEntity {
             return ItemInteractionResult.SUCCESS;
         }
 
-        if(isSameCode(itemInHand, inventory, savedTier)){
+        if(isSameCode(itemInHand, inventory, level, savedTier)){
             isGateOpen = !isGateOpen;
             level.setBlockAndUpdate(worldPosition, Index.GATE.getDefaultState()
                     .setValue(GateBlock.FACING,
@@ -126,10 +135,10 @@ public class GateBE extends SmartBlockEntity {
         return ItemInteractionResult.SUCCESS;
     }
 
-    static public boolean isSameCode(ItemStack stack, SmartInventory inventory, int savedTier){
-        ItemStack first = CardItem.getFirstFilter(stack);
-        ItemStack second = CardItem.getSecondFilter(stack);
-        ItemStack third = CardItem.getThirdFilter(stack);
+    static public boolean isSameCode(ItemStack stack, SmartInventory inventory, Level level , int savedTier){
+        ItemStack first = CardItem.getFirstFilter(stack, level);
+        ItemStack second = CardItem.getSecondFilter(stack, level);
+        ItemStack third = CardItem.getThirdFilter(stack, level);
 
         if(CardItem.getTier(stack) < savedTier) return false;
         if(first.getItem() != inventory.getItem(0).getItem()) return false;

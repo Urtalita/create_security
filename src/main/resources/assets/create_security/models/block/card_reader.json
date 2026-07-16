@@ -1,0 +1,9 @@
+{
+  "parent": "create_security:custom/card_reader",
+  "textures": {
+    "all": "create_security:block/card_reader",
+    "particle": "create_security:block/reader_particule",
+    "1": "create_security:block/card_reader"
+  },
+  "render_type": "cutout"
+}

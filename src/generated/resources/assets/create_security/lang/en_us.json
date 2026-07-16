@@ -1,0 +1,10 @@
+{
+  "block.create_security.card_inscriber": "Card Inscriber",
+  "block.create_security.card_reader": "Card Reader",
+  "block.create_security.ticket_gate": "Ticket Gate",
+  "item.create_security.blank_card": "Blank Card",
+  "item.create_security.blank_ticket": "Blank Ticket",
+  "item.create_security.card": "Card",
+  "item.create_security.magnifying_glass": "Magnifying Glass",
+  "item.create_security.ticket": "Ticket"
+}

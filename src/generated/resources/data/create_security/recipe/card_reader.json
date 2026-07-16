@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "n": {
+      "item": "minecraft:iron_nugget"
+    },
+    "s": {
+      "item": "create:iron_sheet"
+    },
+    "t": {
+      "item": "create:electron_tube"
+    },
+    "v": {
+      "item": "create:item_vault"
+    }
+  },
+  "pattern": [
+    "ntn",
+    "svs"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_security:card_reader"
+  }
+}

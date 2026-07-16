@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "create_security:block/ticket_gate/block",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "create_security:block/ticket_gate/block"
+    },
+    "facing=south": {
+      "model": "create_security:block/ticket_gate/block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "create_security:block/ticket_gate/block",
+      "y": 270
+    }
+  }
+}

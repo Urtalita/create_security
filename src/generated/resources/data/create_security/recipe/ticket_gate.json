@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "create:shaft"
+    },
+    "c": {
+      "item": "create:brass_casing"
+    }
+  },
+  "pattern": [
+    "aac"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_security:ticket_gate"
+  }
+}

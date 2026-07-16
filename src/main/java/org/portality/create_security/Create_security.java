@@ -63,6 +63,8 @@ public class Create_security {
         PacketInit.register();
         Index.registerAllComponents(modEventBus);
 
+        CSDatagen.addExtraRegistrateData();
+
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 

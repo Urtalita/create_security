@@ -33,9 +33,11 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import org.portality.create_security.Index.Index;
+import org.portality.create_security.blocks.SmartEncryptedInventory;
 import org.portality.create_security.items.BlankCardItem;
 import org.portality.create_security.items.CardItem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +48,7 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
     private float prevCapRotation;
     public boolean isCapOpen = false;
 
-    public SmartInventory inventory;
+    public SmartEncryptedInventory inventory;
 
     public int selectedTier = 1;
     public boolean lock = false;
@@ -62,7 +64,13 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
 
     public InscriberBE(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
-        inventory = new SmartInventory(5, this, (slot, stack) -> {
+
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(2);
+        list.add(3);
+        list.add(4);
+
+        inventory = new SmartEncryptedInventory(5, this, (slot, stack) -> {
             if(slot == 0){
                 return stack.getItem() == Items.INK_SAC;
             }
@@ -70,7 +78,7 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
                 return stack.getItem() == Index.BLANK_CARD.asItem() || stack.getItem() == Index.BLANK_TICKET.asItem();
             }
             return true;
-        });
+        }, list);
         itemHandler = new CardInscriberInventoryWrapper(inventory, this);
     }
 
@@ -143,8 +151,8 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
             if(!procesingCard) stack = Index.TICKET.asStack();
 
             stack.set(Index.CARD_TIER, selectedTier);
-            if(lock) if (tempId != null) stack.set(Index.PLAYER_ID, tempId);
-            CardItem.setFilters(stack, inventory.getItem(2), inventory.getItem(3), inventory.getItem(4));
+            if(!lock) if (tempId != null) stack.set(Index.PLAYER_ID, tempId);
+            CardItem.setFilters(stack, inventory.getItem(2), inventory.getItem(3), inventory.getItem(4), level);
 
             Direction facing = getBlockState().getValue(InscriberBlock.HORIZONTAL_FACING).getClockWise();
             Vec3 movementVector = new Vec3(facing.getNormal().getX(), 1.5f, facing.getNormal().getZ()).scale(0.5);

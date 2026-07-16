@@ -1,0 +1,23 @@
+{
+  "block.create_security.card_inscriber": "ɹǝqıɹɔsuI pɹɐƆ",
+  "block.create_security.card_reader": "ɹǝpɐǝᴚ pɹɐƆ",
+  "block.create_security.ticket_gate": "ǝʇɐ⅁ ʇǝʞɔı⟘",
+  "create_security.ponder.card_reader.header": "ɹǝpɐǝᴚ pɹɐƆ buıs∩",
+  "create_security.ponder.card_reader.text_1": "ʇǝʞɔıʇ ɟo pɹɐɔ pǝpoɔuǝ ɥʇıʍ ʇı buısn ʎq ɹǝpɐǝɹ pɹɐɔ ǝɹnbıɟuoƆ",
+  "create_security.ponder.card_reader.text_2": "ǝpoɔ ǝɯɐs ǝɥʇ ɥʇıʍ ʇǝʞɔıʇ ɹo pɹɐɔ ʎq pǝʇɐʌıʇɔɐ ʎןuo ǝq uɐɔ ɹǝpɐǝɹ pɹɐɔ 'uoıʇɐɹnbıɟuoɔ ɹǝʇɟɐ",
+  "create_security.ponder.card_reader.text_3": "ʎqɹɐǝu punoɹb uo sʇǝʞɔıʇ ɹo spɹɐɔ uɐɔs oʇ ǝןqɐ osןɐ sı ɹǝpɐǝɹ pɹɐɔ",
+  "create_security.ponder.gate.header": "sǝʇɐb ʇǝʞɔı⟘ buıs∩",
+  "create_security.ponder.gate.text_1": "ʇǝʞɔıʇ ɟo pɹɐɔ pǝpoɔuǝ ɥʇıʍ ʇı buısn ʎq ǝʇɐb ʇǝʞɔıʇ ǝɹnbıɟuoƆ",
+  "create_security.ponder.gate.text_2": "ǝpoɔ ǝɯɐs ǝɥʇ ɥʇıʍ ʇǝʞɔıʇ ɹo pɹɐɔ ʎq pǝuǝdo ʎןuo ǝq uɐɔ ǝʇɐb ʇǝʞɔıʇ 'uoıʇɐɹnbıɟuoɔ ɹǝʇɟɐ",
+  "create_security.ponder.gate.text_3": "ʎqɹɐǝu punoɹb uo sʇǝʞɔıʇ ɹo spɹɐɔ uɐɔs oʇ ǝןqɐ osןɐ sı ǝʇɐb ʇǝʞɔıʇ",
+  "create_security.ponder.inscriber.header": "ɹǝpɐǝᴚ pɹɐƆ buıs∩",
+  "create_security.ponder.inscriber.text_1": "ǝɔɹoɟ ןɐuoıʇɐʇoɹ ɥʇıʍ ɹǝqıɹɔsuI ʎןddnS",
+  "create_security.ponder.inscriber.text_2": "ɔɐS ʞuI puɐ ʇǝʞɔı⟘ ɹo pɹɐƆ ʎʇdɯǝ ppɐ",
+  "create_security.ponder.inscriber.text_3": "I∩ ǝɥʇ uı ǝpoɔ ǝɹnbıɟuoƆ",
+  "create_security.ponder.inscriber.text_4": "ןɐubıs ǝuoʇspǝɹ ɥʇıʍ ɹo 'I∩ ǝɥʇ uı ɹǝqıɹɔsuI ǝʇɐʌıʇɔⱯ",
+  "item.create_security.blank_card": "pɹɐƆ ʞuɐןᗺ",
+  "item.create_security.blank_ticket": "ʇǝʞɔı⟘ ʞuɐןᗺ",
+  "item.create_security.card": "pɹɐƆ",
+  "item.create_security.magnifying_glass": "ssɐן⅁ buıʎɟıubɐW",
+  "item.create_security.ticket": "ʇǝʞɔı⟘"
+}

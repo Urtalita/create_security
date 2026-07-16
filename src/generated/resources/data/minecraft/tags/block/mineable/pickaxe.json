@@ -1,0 +1,7 @@
+{
+  "values": [
+    "create_security:card_inscriber",
+    "create_security:ticket_gate",
+    "create_security:card_reader"
+  ]
+}

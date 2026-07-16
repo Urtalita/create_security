@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "create:andesite_casing"
+    },
+    "h": {
+      "item": "create:shaft"
+    },
+    "s": {
+      "item": "create:schematic_table"
+    },
+    "z": {
+      "item": "create:zinc_nugget"
+    }
+  },
+  "pattern": [
+    "zzz",
+    "csh"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_security:card_inscriber"
+  }
+}

@@ -21,6 +21,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.portality.create_security.Index.Index;
+import org.portality.create_security.blocks.SmartEncryptedInventory;
 import org.portality.create_security.blocks.inscriber.InscriberBlock;
 import org.portality.create_security.items.CardItem;
 
@@ -30,7 +31,7 @@ import java.util.List;
 import static org.portality.create_security.blocks.gate.GateBE.isSameCode;
 
 public class ReaderBE extends SmartBlockEntity {
-    public SmartInventory inventory;
+    public SmartEncryptedInventory inventory;
     private int openTicks = -1;
     public boolean hasRedstoneSignal = false;
     protected IItemHandler itemHandler;
@@ -38,9 +39,15 @@ public class ReaderBE extends SmartBlockEntity {
 
     public ReaderBE(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        inventory = new SmartInventory(3, this, (slot, stack) -> {
+
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(0);
+        list.add(1);
+        list.add(2);
+
+        inventory = new SmartEncryptedInventory(3, this, (slot, stack) -> {
             return true;
-        });
+        }, list);
 
         itemHandler = new CardReaderInventoryWrapper(inventory, this);
     }
@@ -79,7 +86,7 @@ public class ReaderBE extends SmartBlockEntity {
             if(entity.getItem().getItem() instanceof CardItem){
                 ItemStack stack = entity.getItem();
 
-                if(isSameCode(stack, inventory, savedTier)) {
+                if(isSameCode(stack, inventory, level, savedTier)) {
                     hasRedstoneSignal = true;
                     openTicks = 40;
                     level.setBlockAndUpdate(worldPosition, Index.READER.getDefaultState()
@@ -109,9 +116,9 @@ public class ReaderBE extends SmartBlockEntity {
         if(!(itemInHand.getItem() instanceof CardItem)) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         if(inventory.isEmpty()){
-            inventory.setStackInSlot(0, CardItem.getFirstFilter(itemInHand));
-            inventory.setStackInSlot(1, CardItem.getSecondFilter(itemInHand));
-            inventory.setStackInSlot(2, CardItem.getThirdFilter(itemInHand));
+            inventory.setStackInSlot(0, CardItem.getFirstFilter(itemInHand, level));
+            inventory.setStackInSlot(1, CardItem.getSecondFilter(itemInHand, level));
+            inventory.setStackInSlot(2, CardItem.getThirdFilter(itemInHand, level));
             savedTier = CardItem.getTier(itemInHand);
 
             if(player instanceof ServerPlayer serverPlayer){
@@ -122,7 +129,7 @@ public class ReaderBE extends SmartBlockEntity {
             return ItemInteractionResult.SUCCESS;
         }
 
-        if(isSameCode(itemInHand, inventory, savedTier)){
+        if(isSameCode(itemInHand, inventory,level , savedTier)){
             hasRedstoneSignal = true;
             openTicks = 40;
             level.setBlockAndUpdate(worldPosition, Index.READER.getDefaultState()
