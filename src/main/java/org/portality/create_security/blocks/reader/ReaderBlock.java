@@ -100,11 +100,11 @@ public class ReaderBlock extends HorizontalDirectionalBlock implements IWrenchab
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
         if(facing.getAxis() == Direction.Axis.Z) facing = facing.getOpposite();
-        VoxelShape shape = HitboxHelper.calculateDierectionalVoxelShape(facing, new Vec3(0, 0, 9), new Vec3(16, 16, 16));
-        VoxelShape shape2 = HitboxHelper.calculateDierectionalVoxelShape(facing, new Vec3(0, 0, 4), new Vec3(16, 11, 9));
-        VoxelShape another = HitboxHelper.calculateDierectionalVoxelShape(facing, new Vec3(0, 0, 0), new Vec3(16, 1, 16));
-        VoxelShape side = HitboxHelper.calculateDierectionalVoxelShape(facing, new Vec3(0, 0, 0), new Vec3(2, 16, 16));
-        VoxelShape side2 = HitboxHelper.calculateDierectionalVoxelShape(facing, new Vec3(14, 0, 0), new Vec3(16, 16, 16));
+        VoxelShape shape = HitboxHelper.calculateDierectionalVoxelShape(this ,facing, new Vec3(0, 0, 9), new Vec3(16, 16, 16));
+        VoxelShape shape2 = HitboxHelper.calculateDierectionalVoxelShape(this ,facing, new Vec3(0, 0, 4), new Vec3(16, 11, 9));
+        VoxelShape another = HitboxHelper.calculateDierectionalVoxelShape(this ,facing, new Vec3(0, 0, 0), new Vec3(16, 1, 16));
+        VoxelShape side = HitboxHelper.calculateDierectionalVoxelShape(this ,facing, new Vec3(0, 0, 0), new Vec3(2, 16, 16));
+        VoxelShape side2 = HitboxHelper.calculateDierectionalVoxelShape(this ,facing, new Vec3(14, 0, 0), new Vec3(16, 16, 16));
 
         shape = Shapes.or(shape, another);
         shape = Shapes.or(shape, side);

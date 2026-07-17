@@ -68,7 +68,7 @@ public class GateBlock extends HorizontalDirectionalBlock implements IWrenchable
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
         if(facing.getAxis() == Direction.Axis.Z) facing = facing.getOpposite();
-        VoxelShape shape = HitboxHelper.calculateDierectionalVoxelShape(facing, new Vec3(12, 0, 0), new Vec3(16, 21, 16));
+        VoxelShape shape = HitboxHelper.calculateNewDierectionalVoxelShape(facing, new Vec3(12, 0, 0), new Vec3(16, 21, 16));
 
         AtomicBoolean isOpen = new AtomicBoolean(false);
         withBlockEntityDo(level, pos, b -> {
@@ -76,7 +76,7 @@ public class GateBlock extends HorizontalDirectionalBlock implements IWrenchable
         });
 
         if(isOpen.get()){
-            VoxelShape another = HitboxHelper.calculateDierectionalVoxelShape(facing, new Vec3(0, 0, 3), new Vec3(16, 21, 5));
+            VoxelShape another = HitboxHelper.calculateNewDierectionalVoxelShape(facing, new Vec3(0, 0, 3), new Vec3(16, 21, 5));
 
             shape = Shapes.or(shape, another);
         }
