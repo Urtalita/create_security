@@ -49,9 +49,8 @@ public class InscriberBlock extends HorizontalKineticBlock implements IWrenchabl
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Direction pref = getPreferredHorizontalFacing(context);
-        if(pref != null) return this.defaultBlockState()
-                .setValue(HORIZONTAL_FACING, pref
-                        .getOpposite());
+        if (pref != null) return this.defaultBlockState()
+                .setValue(HORIZONTAL_FACING, pref);
 
         return this.defaultBlockState()
                 .setValue(HORIZONTAL_FACING, context.getHorizontalDirection()
