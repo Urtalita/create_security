@@ -1,9 +1,13 @@
 package org.portality.create_security.blocks.inscriber;
 
 import com.simibubi.create.AllSoundEvents;
+import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
+import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.animatedContainer.AnimatedContainerBehaviour;
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -21,7 +25,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -41,6 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static net.minecraft.ChatFormatting.GRAY;
+
 public class InscriberBE extends KineticBlockEntity implements MenuProvider {
 
     private final CardInscriberInventoryWrapper itemHandler;
@@ -53,7 +58,7 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
     public int selectedTier = 1;
     public boolean lock = false;
 
-    private int multiplyer = 45;
+    private int multiplier = 45;
 
     public int processingTicks = -1;
     private boolean procesingCard = true;
@@ -86,7 +91,7 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
         itemHandler = new CardInscriberInventoryWrapper(inventory, this);
     }
 
-    private int getLenght(){
+    private int getLength(){
         return (int) (lenght / Math.abs(getTheoreticalSpeed()));
     }
 
@@ -99,7 +104,7 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
     }
 
     public float getCapRotation(float pt){
-        return Mth.lerp(pt, Mth.sin(prevCapRotation * Mth.HALF_PI) * multiplyer, Mth.sin(capRotation * Mth.HALF_PI) * multiplyer);
+        return Mth.lerp(pt, Mth.sin(prevCapRotation * Mth.HALF_PI) * multiplier, Mth.sin(capRotation * Mth.HALF_PI) * multiplier);
     }
 
     @Override
@@ -116,7 +121,7 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
     void onOpenChange(boolean open){
         isCapOpen = open;
         sendData();
-        multiplyer = 45;
+        multiplier = 45;
     }
 
     public ItemInteractionResult use(Player player) {
@@ -151,7 +156,7 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
     public void tick() {
         super.tick();
 
-        if(processingTicks > getLenght()){
+        if(processingTicks > getLength()){
             processingTicks = -1;
             isCapOpen = false;
 
@@ -190,9 +195,9 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
         if(processingTicks >= 0){
             if(Math.abs(getTheoreticalSpeed()) == 0) processingTicks--;
             processingTicks++;
-            if(processingTicks > getLenght() - animationLength){
+            if(processingTicks > getLength() - animationLength){
                 isCapOpen = true;
-                multiplyer = 135;
+                multiplier = 135;
             }
 
             sendData();
@@ -217,18 +222,23 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
         }
     }
 
-    @Override
-    public float calculateStressApplied() {
-        float impact = 4f;
-        this.lastStressApplied = impact;
-        return impact;
-    }
+//    @Override
+//    protected Block getStressConfigKey() {
+//        return Index.INSCRIBER.get();
+//    }
+//
+//    @Override
+//    public float calculateStressApplied() {
+//        float impact = /*4f*/ (float) BlockStressValues.getImpact(getStressConfigKey());
+//        this.lastStressApplied = impact;
+//        return impact;
+//    }
 
     @Override
     public void onSpeedChanged(float previousSpeed) {
         super.onSpeedChanged(previousSpeed);
         isCapOpen = getSpeed() != 0;
-        multiplyer = 45;
+        multiplier = 45;
     }
 
     @Override
@@ -270,7 +280,7 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
         selectedTier = compound.getInt("tier");
         lock = compound.getBoolean("lock");
         processingTicks = compound.getInt("PTicks");
-        multiplyer = compound.getInt("multiplayer");
+        multiplier = compound.getInt("multiplayer");
     }
 
     @Override
@@ -282,7 +292,7 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
         compound.putInt("tier", selectedTier);
         compound.putBoolean("lock", lock);
         compound.putInt("PTicks", processingTicks);
-        compound.putInt("multiplayer", multiplyer);
+        compound.putInt("multiplayer", multiplier);
     }
 
     @Override

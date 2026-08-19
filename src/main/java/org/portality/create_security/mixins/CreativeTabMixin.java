@@ -4,8 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
-import org.portality.create_security.Create_security;
+import org.portality.create_security.CreateSecurity;
 import org.portality.create_security.Index.Index;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,7 +23,7 @@ public class CreativeTabMixin {
     @WrapMethod(method = "buildContents")
     private void createSprings$buildContents(final CreativeModeTab.ItemDisplayParameters parameters, final Operation<Void> original) {
         final CreativeModeTab self = (CreativeModeTab) (Object) this;
-        if(self == Create_security.MAIN_TAB.get()) {
+        if(self == CreateSecurity.MAIN_TAB.get()) {
             final List<ItemStack> displayItems = new LinkedList<>();
             final Set<ItemStack> searchItems = new LinkedHashSet<>();
             create_Springs_1_21_1$processItems(displayItems::add, searchItems::add);
