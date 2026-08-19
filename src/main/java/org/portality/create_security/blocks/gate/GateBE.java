@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.portality.create_security.Index.Index;
 import org.portality.create_security.blocks.SmartEncryptedInventory;
+import org.portality.create_security.blocks.inscriber.InscriberBE;
 import org.portality.create_security.blocks.reader.ReaderBlock;
 import org.portality.create_security.items.CardItem;
 
@@ -32,7 +33,7 @@ public class GateBE extends SmartBlockEntity {
     public boolean isGateOpen = false;
     public SmartEncryptedInventory inventory;
     private int openTicks = -1;
-    private int savedTier;
+    private int savedTier = -1;
 
     public GateBE(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -70,12 +71,12 @@ public class GateBE extends SmartBlockEntity {
 
         prevGateRotation = gateRotation;
         if(isGateOpen){
-            gateRotation = Math.min(gateRotation + 0.1f, 1);
+            gateRotation = Math.min(gateRotation + 1f / InscriberBE.animationLength, 1);
             if(prevGateRotation == 0 && prevGateRotation != gateRotation){
                 AllSoundEvents.WRENCH_ROTATE.playOnServer(level, getBlockPos());
             }
         } else {
-            gateRotation = Math.max(gateRotation - 0.1f, 0);
+            gateRotation = Math.max(gateRotation - 1f / InscriberBE.animationLength, 0);
             if(gateRotation == 0 && prevGateRotation != gateRotation){
                 AllSoundEvents.FROGPORT_CLOSE.playOnServer(level, getBlockPos());
             }
@@ -114,9 +115,11 @@ public class GateBE extends SmartBlockEntity {
             inventory.setStackInSlot(1, CardItem.getSecondFilter(itemInHand, level));
             inventory.setStackInSlot(2, CardItem.getThirdFilter(itemInHand, level));
             savedTier = CardItem.getTier(itemInHand);
+            openTicks = 0;
+            isGateOpen = false;
 
             if(player instanceof ServerPlayer serverPlayer){
-                serverPlayer.sendSystemMessage(Component.literal("Card saved"), true);
+                serverPlayer.sendSystemMessage(Component.translatable("gui.create_security.inscriber.register"), true);
             }
             return ItemInteractionResult.SUCCESS;
         }
@@ -167,5 +170,27 @@ public class GateBE extends SmartBlockEntity {
         tag.putFloat("gateRotation", gateRotation);
         tag.putInt("openTicks", openTicks);
         tag.putInt("tier", savedTier);
+    }
+
+    public void start() {
+        if(savedTier != -1) return;
+
+        int signal = level.getBestNeighborSignal(worldPosition);
+        if(signal > 0){
+            openTicks = Integer.MAX_VALUE;
+            isGateOpen = true;
+            level.setBlockAndUpdate(worldPosition, Index.GATE.getDefaultState()
+                    .setValue(GateBlock.FACING,
+                            getBlockState().getValue(GateBlock.FACING)));
+            sendData();
+            return;
+        }
+
+        level.setBlockAndUpdate(worldPosition, Index.GATE.getDefaultState()
+                .setValue(GateBlock.FACING,
+                        getBlockState().getValue(GateBlock.FACING)));
+        openTicks = 0;
+        isGateOpen = false;
+        sendData();
     }
 }

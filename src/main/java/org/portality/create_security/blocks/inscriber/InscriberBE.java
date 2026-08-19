@@ -1,14 +1,9 @@
 package org.portality.create_security.blocks.inscriber;
 
-import com.simibubi.create.AllBlockEntityTypes;
 import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.content.logistics.box.PackageItem;
-import com.simibubi.create.content.logistics.packagePort.PackagePortAutomationInventoryWrapper;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.animatedContainer.AnimatedContainerBehaviour;
-import com.simibubi.create.foundation.item.SmartInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -26,12 +21,17 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.items.IItemHandler;
+import org.portality.create_security.Index.CSSounds;
 import org.portality.create_security.Index.Index;
 import org.portality.create_security.blocks.SmartEncryptedInventory;
 import org.portality.create_security.items.BlankCardItem;
@@ -58,6 +58,10 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
     public int processingTicks = -1;
     private boolean procesingCard = true;
 
+    private static int lenght = 20 * 256;
+
+    public final static int animationLength = 6;
+
     UUID tempId;
 
     protected AnimatedContainerBehaviour<InscriberMenu> openTracker;
@@ -80,6 +84,10 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
             return true;
         }, list);
         itemHandler = new CardInscriberInventoryWrapper(inventory, this);
+    }
+
+    private int getLenght(){
+        return (int) (lenght / Math.abs(getTheoreticalSpeed()));
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -143,7 +151,7 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
     public void tick() {
         super.tick();
 
-        if(processingTicks > 40){
+        if(processingTicks > getLenght()){
             processingTicks = -1;
             isCapOpen = false;
 
@@ -153,6 +161,11 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
             stack.set(Index.CARD_TIER, selectedTier);
             if(!lock) if (tempId != null) stack.set(Index.PLAYER_ID, tempId);
             CardItem.setFilters(stack, inventory.getItem(2), inventory.getItem(3), inventory.getItem(4), level);
+
+            if(hasOutput(stack)){
+                sendData();
+                return;
+            }
 
             Direction facing = getBlockState().getValue(InscriberBlock.HORIZONTAL_FACING).getClockWise();
             Vec3 movementVector = new Vec3(facing.getNormal().getX(), 1.5f, facing.getNormal().getZ()).scale(0.5);
@@ -169,10 +182,15 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
                     SoundSource.NEUTRAL, 0.8f, 1F);
 
             sendData();
+
+            if(level.getBestNeighborSignal(worldPosition) == 0){
+                start();
+            }
         }
         if(processingTicks >= 0){
+            if(Math.abs(getTheoreticalSpeed()) == 0) processingTicks--;
             processingTicks++;
-            if(processingTicks == 30){
+            if(processingTicks > getLenght() - animationLength){
                 isCapOpen = true;
                 multiplyer = 135;
             }
@@ -180,14 +198,19 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
             sendData();
         }
 
+        if(processingTicks <= 0){
+            int signal = level.getBestNeighborSignal(worldPosition);
+            if(signal == 0) start();
+        }
+
         prevCapRotation = capRotation;
         if(isCapOpen){
-            capRotation = Math.min(capRotation + 0.1f, 1);
+            capRotation = Math.min(capRotation + (1f / animationLength), 1);
             if(prevCapRotation == 0 && prevCapRotation != capRotation){
                 AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(level, getBlockPos());
             }
         } else {
-            capRotation = Math.max(capRotation - 0.1f, 0);
+            capRotation = Math.max(capRotation - (1f / animationLength), 0);
             if(capRotation == 0 && prevCapRotation != capRotation){
                 AllSoundEvents.FROGPORT_CLOSE.playOnServer(level, getBlockPos());
             }
@@ -224,6 +247,20 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
         Block.popResource(level, worldPosition, box);
     }
 
+    private boolean hasOutput(ItemStack card){
+        for(Direction facing : Direction.values()){
+            IItemHandler cap = level.getCapability(Capabilities.ItemHandler.BLOCK, worldPosition.relative(facing), facing.getOpposite());
+            if(cap == null) continue;
+
+            for(int i = 0; i < cap.getSlots(); i++){
+                ItemStack leftStack = cap.insertItem(i, card, false);
+                if(leftStack == ItemStack.EMPTY) return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(compound, registries, clientPacket);
@@ -246,5 +283,19 @@ public class InscriberBE extends KineticBlockEntity implements MenuProvider {
         compound.putBoolean("lock", lock);
         compound.putInt("PTicks", processingTicks);
         compound.putInt("multiplayer", multiplyer);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void tickAudio() {
+        super.tickAudio();
+        if(processingTicks % 40 == 1){
+            float x = worldPosition.getX() + .5f;
+            float y = worldPosition.getY() + .5f;
+            float z = worldPosition.getZ() + .5f;
+
+            level.playLocalSound(x, y, z, CSSounds.INSCRIBE.get(), SoundSource.BLOCKS, 0.6f,
+                    1f, true);
+        }
     }
 }

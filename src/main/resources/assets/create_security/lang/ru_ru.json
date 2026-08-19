@@ -8,6 +8,7 @@
   "item.create_security.card": "Карта",
   "create_security.tier": "Уровень доступа: ",
   "gui.create_security.inscriber_gui.label_mode_universal": "режим доступа: §aвсе",
+  "gui.create_security.inscriber.register": "Код зарегистрирован",
   "tooltip.create_security.magnifying_glass_wrong_hand": "§cPut this item in your main hand to use it",
   "gui.create_security.inscriber_gui.label_tier": "Уровень",
   "block.create_security.card_inscriber": "Механический высекатель",
@@ -37,7 +38,7 @@
   "create_security.ponder.inscriber.text_1": "Подведите вращательную силу к высекателю",
   "create_security.ponder.inscriber.text_2": "Снабдите его пустой картой или билетом и чернильным мешком",
   "create_security.ponder.inscriber.text_3": "Настройте код карты в инвенторе высекателя",
-  "create_security.ponder.inscriber.text_4": "Активируйте высекатель в его инвенторе или с помощью редстоун-сигнала",
+  "create_security.ponder.inscriber.text_4": "При активации высекателя редстоун сигналом он останавливается ",
 
   "item.create_security.magnifying_glass.tooltip.summary": "Удобный инструмент для _чтения мелкого шрифта_",
   "item.create_security.magnifying_glass.tooltip.condition1": "Если находится в инвенторе",

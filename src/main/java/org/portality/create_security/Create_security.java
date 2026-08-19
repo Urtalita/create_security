@@ -25,6 +25,7 @@ import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactori
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.portality.create_security.Index.CSMenus;
+import org.portality.create_security.Index.CSSounds;
 import org.portality.create_security.Index.Index;
 import org.portality.create_security.Index.CSPartalModels;
 import org.portality.create_security.items.CardItem;
@@ -62,6 +63,7 @@ public class Create_security {
         CSMenus.register();
         PacketInit.register();
         Index.registerAllComponents(modEventBus);
+        CSSounds.register(modEventBus);
 
         CSDatagen.addExtraRegistrateData();
 

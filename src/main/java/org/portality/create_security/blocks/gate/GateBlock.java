@@ -26,6 +26,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.portality.create_security.HitboxHelper;
 import org.portality.create_security.Index.Index;
+import org.portality.create_security.blocks.inscriber.InscriberBE;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -92,5 +93,11 @@ public class GateBlock extends HorizontalDirectionalBlock implements IWrenchable
     @Override
     protected ItemInteractionResult useItemOn(ItemStack p_316304_, BlockState p_316362_, Level level, BlockPos pos, Player player, InteractionHand p_316595_, BlockHitResult p_316140_) {
         return onBlockEntityUseItemOn(level, pos, b -> b.use(player));
+    }
+
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block p_60512_, BlockPos p_60513_, boolean p_60514_) {
+        super.neighborChanged(state, level, pos, p_60512_, p_60513_, p_60514_);
+        withBlockEntityDo(level, pos, GateBE::start);
     }
 }

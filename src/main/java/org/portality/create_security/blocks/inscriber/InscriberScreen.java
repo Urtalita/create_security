@@ -16,7 +16,7 @@ public class InscriberScreen extends AbstractSimiContainerScreen<InscriberMenu> 
     int selectedTier = 1;
     GuiTextures background = GuiTextures.INSCRIBER_MAIN;
 
-    private IconButton tierButton;
+    private GuiTextures tier;
     private IconButton confirmButton;
     private IconButton lockButton;
     private ConfigurableButton rightButton;
@@ -41,6 +41,8 @@ public class InscriberScreen extends AbstractSimiContainerScreen<InscriberMenu> 
         int y = topPos;
 
         background.render(graphics, x, y);
+        tier.render(graphics, x + 126, y + 39);
+
         if(!hasSpeed()) GuiTextures.ADD_ROTATION.render(graphics, x, y - GuiTextures.ADD_ROTATION.getHeight());
         else if(!hasResources()) GuiTextures.ADD_RESOURCES.render(graphics, x, y - GuiTextures.ADD_ROTATION.getHeight());
     }
@@ -51,9 +53,7 @@ public class InscriberScreen extends AbstractSimiContainerScreen<InscriberMenu> 
         int x = leftPos;
         int y = topPos;
 
-        tierButton = new IconButton(x + 126, y + 39, 18, 24, GuiTextures.T1);
-        tierButton.withCallback(this::setRightButton);
-        addRenderableWidget(tierButton);
+        tier = GuiTextures.T1;
 
         confirmButton = new IconButton(x + 153, y + 82, AllIcons.I_CONFIRM);
         confirmButton.withCallback(this::confirm);
@@ -97,10 +97,10 @@ public class InscriberScreen extends AbstractSimiContainerScreen<InscriberMenu> 
                 280 + xShift, 177 + yShift, -12500671, false);
 
         if(!hasSpeed()) guiGraphics.drawString(this.font, Component.translatable("gui.create_security.inscriber_gui.label_no_rotation"),
-                197 + xShift, 130 + yShift, -1, false);
+                197 + xShift, 130 + yShift + 5, -1, false);
         else if(!menu.hasResources())
             guiGraphics.drawString(this.font, Component.translatable("gui.create_security.inscriber_gui.label_add_ressources_to_continue"),
-                    209 + xShift, 130 + yShift, -1, false);
+                    209 + xShift, 130 + yShift + 5, -1, false);
     }
 
     void lock(){
@@ -145,7 +145,7 @@ public class InscriberScreen extends AbstractSimiContainerScreen<InscriberMenu> 
             default -> tier;
         };
 
-        tierButton.setIcon(tier);
+        this.tier = tier;
     }
 
     boolean hasSpeed(){

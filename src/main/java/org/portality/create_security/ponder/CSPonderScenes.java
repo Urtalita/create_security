@@ -200,7 +200,7 @@ public class CSPonderScenes {
 
         scene.overlay().showText(70)
                 .placeNearTarget()
-                .text("Activate Inscriber in the UI, or with redstone signal")
+                .text("by applying redstone signal inscriber can be stopped")
                 .attachKeyFrame()
                 .pointAt(util.vector().of(1.5, 1.5, 0.5));
         scene.idle(80);

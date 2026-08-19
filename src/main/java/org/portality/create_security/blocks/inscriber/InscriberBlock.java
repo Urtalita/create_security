@@ -79,11 +79,8 @@ public class InscriberBlock extends HorizontalKineticBlock implements IWrenchabl
     }
 
     @Override
-    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block p_60512_, BlockPos p_60513_, boolean p_60514_) {
-        super.neighborChanged(state, level, pos, p_60512_, p_60513_, p_60514_);
-
-        int signal = level.getBestNeighborSignal(pos);
-        if(signal > 0) withBlockEntityDo(level, pos, InscriberBE::start);
+    protected void neighborChanged(BlockState p_60509_, Level p_60510_, BlockPos p_60511_, Block p_60512_, BlockPos p_60513_, boolean p_60514_) {
+        super.neighborChanged(p_60509_, p_60510_, p_60511_, p_60512_, p_60513_, p_60514_);
     }
 }
 

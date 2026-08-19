@@ -122,7 +122,7 @@ public class ReaderBE extends SmartBlockEntity {
             savedTier = CardItem.getTier(itemInHand);
 
             if(player instanceof ServerPlayer serverPlayer){
-                serverPlayer.sendSystemMessage(Component.literal("Card saved"), true);
+                serverPlayer.sendSystemMessage(Component.translatable("gui.create_security.inscriber.register"), true);
             }
 
             AllSoundEvents.CONFIRM.playOnServer(level, getBlockPos());

@@ -22,6 +22,8 @@ public class InscriberRenderer extends KineticBlockEntityRenderer<InscriberBE> {
         super(context);
     }
 
+
+
     @Override
     protected void renderSafe(InscriberBE be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         BlockState state = getRenderedBlockState(be);
@@ -34,8 +36,8 @@ public class InscriberRenderer extends KineticBlockEntityRenderer<InscriberBE> {
         SuperByteBuffer superBuffer = CachedBuffers.partial(top, be.getBlockState());
 
         superBuffer.rotateCenteredDegrees(90, Direction.Axis.Y);
-        superBuffer.translate(0, 1/16f, 0);
         superBuffer.rotateCenteredDegrees(-facing.toYRot(), Direction.Axis.Y);
+        superBuffer.translate(0, 1/16f, 2/16f);
 
         Axis axis = Axis.XN;
         Vec3 offset = new Vec3(0, 12/16f, 0);

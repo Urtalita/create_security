@@ -1,0 +1,11 @@
+{
+  "inscribe": {
+    "sounds": [
+      {
+        "type": "file",
+        "name": "create_security:card_inscribe"
+      }
+    ],
+    "subtitle": "сreate_security.subtitles.inscribe"
+  }
+}
