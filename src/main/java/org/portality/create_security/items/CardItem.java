@@ -50,6 +50,7 @@ public class CardItem extends Item {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
         return Optional.of(new CardTooltipComponent(
                 getFirstFilter(stack, Minecraft.getInstance().level),
@@ -60,6 +61,7 @@ public class CardItem extends Item {
         );
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static class CardTooltipComponent implements TooltipComponent {
         public final ItemStack firstFilter;
         public final ItemStack secondFilter;
