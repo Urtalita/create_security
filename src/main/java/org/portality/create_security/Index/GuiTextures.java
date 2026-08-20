@@ -5,10 +5,8 @@ import net.createmod.catnip.gui.UIRenderHelper;
 import net.createmod.catnip.gui.element.ScreenElement;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import org.portality.create_security.Create_security;
+import org.portality.create_security.CreateSecurity;
 import net.createmod.catnip.theme.Color;
-
-import java.awt.*;
 
 public enum GuiTextures implements ScreenElement, TextureSheetSegment {
     INSCRIBER_MAIN("inscriber", 256, 256),
@@ -45,7 +43,7 @@ public enum GuiTextures implements ScreenElement, TextureSheetSegment {
     }
 
     GuiTextures(String location, int startX, int startY, int width, int height) {
-        this(Create_security.MODID, location, startX, startY, width, height);
+        this(CreateSecurity.MODID, location, startX, startY, width, height);
     }
 
     GuiTextures(String namespace, String location, int startX, int startY, int width, int height) {

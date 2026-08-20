@@ -3,7 +3,6 @@ package org.portality.create_security.Index;
 import com.mojang.serialization.Codec;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
@@ -18,15 +17,13 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.ApiStatus;
-import org.portality.create_security.Create_security;
+import org.portality.create_security.CreateSecurity;
 import org.portality.create_security.blocks.gate.GateBE;
 import org.portality.create_security.blocks.gate.GateBlock;
 import org.portality.create_security.blocks.gate.GateRenderer;
@@ -36,6 +33,7 @@ import org.portality.create_security.blocks.inscriber.InscriberRenderer;
 import org.portality.create_security.blocks.reader.ReaderBE;
 import org.portality.create_security.blocks.reader.ReaderBlock;
 import org.portality.create_security.blocks.reader.ReaderBlockStateGenerator;
+import org.portality.create_security.config.CSStress;
 import org.portality.create_security.items.BlankCardItem;
 import org.portality.create_security.items.CardItem;
 
@@ -43,18 +41,16 @@ import java.util.UUID;
 import java.util.function.UnaryOperator;
 
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
-import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
-import static net.minecraft.world.level.block.Blocks.IRON_BARS;
 
 public class Index {
 
     static {
-        Create_security.CS_REGISTRATE.setCreativeTab(Create_security.MAIN_TAB);
+        CreateSecurity.REGISTRATE.setCreativeTab(CreateSecurity.MAIN_TAB);
     }
 
-    private static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Create_security.MODID);
+    private static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, CreateSecurity.MODID);
 
-    public static final ItemEntry<Item> MAGNIFYING_GLASS = Create_security.CS_REGISTRATE
+    public static final ItemEntry<Item> MAGNIFYING_GLASS = CreateSecurity.REGISTRATE
             .item("magnifying_glass", Item::new)
             .properties(p -> p.stacksTo(1))
             .recipe((c, b) ->
@@ -71,7 +67,7 @@ public class Index {
             )
             .register();
 
-    public static final ItemEntry<BlankCardItem> BLANK_CARD = Create_security.CS_REGISTRATE
+    public static final ItemEntry<BlankCardItem> BLANK_CARD = CreateSecurity.REGISTRATE
             .item("blank_card", BlankCardItem::new)
             .properties(p -> p.stacksTo(16))
             .recipe((c, b) ->
@@ -82,12 +78,12 @@ public class Index {
                             .save(b))
             .register();
 
-    public static final ItemEntry<CardItem> CARD = Create_security.CS_REGISTRATE
+    public static final ItemEntry<CardItem> CARD = CreateSecurity.REGISTRATE
             .item("card", CardItem::new)
             .properties(p -> p.rarity(Rarity.UNCOMMON).stacksTo(1))
             .register();
 
-    public static final ItemEntry<BlankCardItem> BLANK_TICKET = Create_security.CS_REGISTRATE
+    public static final ItemEntry<BlankCardItem> BLANK_TICKET = CreateSecurity.REGISTRATE
             .item("blank_ticket", BlankCardItem::new)
             .properties(p -> p.stacksTo(16))
             .recipe((c, b) ->
@@ -98,19 +94,20 @@ public class Index {
                             .save(b))
             .register();
 
-    public static final ItemEntry<CardItem> TICKET = Create_security.CS_REGISTRATE
+    public static final ItemEntry<CardItem> TICKET = CreateSecurity.REGISTRATE
             .item("ticket", CardItem::new)
             .properties(p -> p.rarity(Rarity.UNCOMMON).stacksTo(1))
             .register();
 
-    public static final BlockEntry<InscriberBlock> INSCRIBER = Create_security.registrate()
+    public static final BlockEntry<InscriberBlock> INSCRIBER = CreateSecurity.registrate()
             .block("card_inscriber", InscriberBlock::new)
             .initialProperties(AllBlocks.ANDESITE_CASING::get)
             .initialProperties(SharedProperties::wooden)
             .properties(BlockBehaviour.Properties::noOcclusion)
             .transform(axeOrPickaxe())
             .blockstate(BlockStateGen.horizontalBlockProvider(true))
-            .item((block, properties) -> new BlockItem(block, properties))
+            .transform(CSStress.setImpact(4.0))
+            .item()
             .recipe((c, b) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .pattern("zzz")
@@ -126,13 +123,13 @@ public class Index {
             .build()
             .register();
 
-    public static final BlockEntityEntry<InscriberBE> INSCRIBER_BE = Create_security.registrate()
+    public static final BlockEntityEntry<InscriberBE> INSCRIBER_BE = CreateSecurity.registrate()
             .blockEntity("card_inscriber", InscriberBE::new)
             .renderer(() -> InscriberRenderer::new)
             .validBlocks(INSCRIBER)
             .register();
 
-    public static final BlockEntry<GateBlock> GATE = Create_security.registrate()
+    public static final BlockEntry<GateBlock> GATE = CreateSecurity.registrate()
             .block("ticket_gate", GateBlock::new)
             .initialProperties(AllBlocks.ANDESITE_CASING::get)
             .initialProperties(SharedProperties::wooden)
@@ -152,13 +149,13 @@ public class Index {
             .build()
             .register();
 
-    public static final BlockEntityEntry<GateBE> GATE_BE = Create_security.registrate()
+    public static final BlockEntityEntry<GateBE> GATE_BE = CreateSecurity.registrate()
             .blockEntity("gate", GateBE::new)
             .renderer(() -> GateRenderer::new)
             .validBlocks(GATE)
             .register();
 
-    public static final BlockEntry<ReaderBlock> READER = Create_security.registrate()
+    public static final BlockEntry<ReaderBlock> READER = CreateSecurity.registrate()
             .block("card_reader", ReaderBlock::new)
             .initialProperties(AllBlocks.ANDESITE_CASING::get)
             .initialProperties(SharedProperties::wooden)
@@ -181,7 +178,7 @@ public class Index {
             .build()
             .register();
 
-    public static final BlockEntityEntry<ReaderBE> READER_BE = Create_security.registrate()
+    public static final BlockEntityEntry<ReaderBE> READER_BE = CreateSecurity.registrate()
             .blockEntity("card_reader", ReaderBE::new)
             .validBlocks(READER)
             .register();

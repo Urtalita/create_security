@@ -1,7 +1,6 @@
 package org.portality.create_security.blocks.reader;
 
 import com.simibubi.create.content.redstone.diodes.AbstractDiodeBlock;
-import com.simibubi.create.content.redstone.diodes.ToggleLatchBlock;
 import com.simibubi.create.foundation.data.SpecialBlockStateGen;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
@@ -10,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
-import org.portality.create_security.Create_security;
+import org.portality.create_security.CreateSecurity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ public class ReaderBlockStateGenerator extends SpecialBlockStateGen {
     }
 
     protected ResourceLocation existing(String name) {
-        return Create_security.asResource("block/" + name);
+        return CreateSecurity.asResource("block/" + name);
     }
 
     protected int getModelIndex(BlockState state) {

@@ -1,7 +1,7 @@
 package org.portality.create_security.Index;
 
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
-import org.portality.create_security.Create_security;
+import org.portality.create_security.CreateSecurity;
 
 public class CSPartalModels {
     public static final PartialModel
@@ -11,11 +11,11 @@ public class CSPartalModels {
             TICKET = block("card_inscriber_ticket");
 
     private static PartialModel block(String path) {
-        return PartialModel.of(Create_security.asResource("block/" + path));
+        return PartialModel.of(CreateSecurity.asResource("block/" + path));
     }
 
     private static PartialModel item(String path) {
-        return PartialModel.of(Create_security.asResource("item/" + path));
+        return PartialModel.of(CreateSecurity.asResource("item/" + path));
     }
 
     public static void register(){

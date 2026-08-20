@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -25,9 +26,14 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
+import org.portality.create_security.HitboxHelper;
 import org.portality.create_security.Index.Index;
 
 public class InscriberBlock extends HorizontalKineticBlock implements IWrenchable, IBE<InscriberBE> {
@@ -43,9 +49,8 @@ public class InscriberBlock extends HorizontalKineticBlock implements IWrenchabl
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Direction pref = getPreferredHorizontalFacing(context);
-        if(pref != null) return this.defaultBlockState()
-                .setValue(HORIZONTAL_FACING, pref
-                        .getOpposite());
+        if (pref != null) return this.defaultBlockState()
+                .setValue(HORIZONTAL_FACING, pref);
 
         return this.defaultBlockState()
                 .setValue(HORIZONTAL_FACING, context.getHorizontalDirection()
@@ -81,6 +86,19 @@ public class InscriberBlock extends HorizontalKineticBlock implements IWrenchabl
     @Override
     protected void neighborChanged(BlockState p_60509_, Level p_60510_, BlockPos p_60511_, Block p_60512_, BlockPos p_60513_, boolean p_60514_) {
         super.neighborChanged(p_60509_, p_60510_, p_60511_, p_60512_, p_60513_, p_60514_);
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        Direction facing = state.getValue(HORIZONTAL_FACING);
+        if (facing.getAxis() == Direction.Axis.X) facing = facing.getOpposite();
+
+        VoxelShape shape = HitboxHelper.calculateDierectionalVoxelShape(this, facing, new Vec3(0, 0, 0), new Vec3(16, 13, 16));
+        VoxelShape shape2 = HitboxHelper.calculateDierectionalVoxelShape(this, facing, new Vec3(0, 13, 2), new Vec3(14, 16, 16));
+
+        shape = Shapes.or(shape, shape2);
+
+        return shape;
     }
 }
 
